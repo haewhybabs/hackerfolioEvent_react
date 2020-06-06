@@ -8,7 +8,10 @@ import Home from './components/home.js';
 import Footer from './components/footer.js'
 import Login from './components/login.js'
 import Register from './components/register.js'
-import createEvent from './components/createEvent.js'
+import CreateEvent from './components/createEvent.js'
+import EventList from './components/eventList.js'
+import AdminEvent from './components/adminEvent.js'
+
 
 
 class App extends Component {
@@ -35,7 +38,9 @@ class App extends Component {
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/Register" component={Register} />
-            <Route path="/create-event" component={createEvent} />
+            <Route path="/create-event" component={CreateEvent} />
+            <Route path="/event-list" component={EventList} />
+            <Route path="/admin-event-list" component={AdminEvent} />
           </Switch>
           <Footer/>
         </div>

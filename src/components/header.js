@@ -1,13 +1,14 @@
 
 import React, { Component} from 'react';
-import { Link } from 'react-router-dom';
+import { Link,Redirect } from 'react-router-dom';
 
 class Header extends Component {
 
     constructor(props) {
     super(props)
         this.state={
-            user:props.user
+            user:props.user,
+            homeRedirect:false
         }
     }
 
@@ -26,12 +27,17 @@ class Header extends Component {
         localStorage.clear('user');
         this.setState({
             user:false,
+            homeRedirect:true
         })
         window.location.reload(false)
     }
 
 
     render() {
+
+        if (this.state.homeRedirect) {
+            return <Redirect push to="/" />
+        }
 
         
         return (
@@ -60,7 +66,7 @@ class Header extends Component {
                                                 </div>
                                             </div>
                                             <div className="collapse navbar-collapse">
-                                                {this.state.user ? 
+                                                {this.state.user && this.state.user.user.roleID==1 ? 
                                                         <ul className="nav navbar-nav csi-nav">
                                                              
                                                             <li><Link to ="/" className="csi-scroll">Welcome, {this.state.user.user.fullName}</Link></li>        
@@ -68,12 +74,22 @@ class Header extends Component {
                                                             <li><Link to ="/event-list" className="csi-scroll">Events</Link></li>
                                                             <li><Link to ="/" className="csi-scroll" onClick={()=>this.logout()}>Logout</Link></li>
                                                         </ul>
-                                                    :
-                                                        <ul className="nav navbar-nav csi-nav">
-                                                            <li><Link to ="/" className="csi-scroll">Home</Link></li>
-                                                            <li><Link to ="/register" className="csi-scroll">Register</Link></li>
-                                                            <li><Link to ="/login" className="csi-scroll">Login</Link></li> 
-                                                        </ul>
+                                                : this.state.user && this.state.user.user.roleID==2 ?
+                                                    
+                                                <ul className="nav navbar-nav csi-nav">
+                                                             
+                                                    <li><Link to ="/" className="csi-scroll">Welcome, {this.state.user.user.fullName}</Link></li>        
+                                                    <li><Link to ="/admin-event-list" className="csi-scroll">Events List</Link></li>
+                                                    <li><Link to ="/" className="csi-scroll" onClick={()=>this.logout()}>Logout</Link></li>
+                                                </ul>
+
+                                                :            
+
+                                                <ul className="nav navbar-nav csi-nav">
+                                                    <li><Link to ="/" className="csi-scroll">Home</Link></li>
+                                                    <li><Link to ="/register" className="csi-scroll">Register</Link></li>
+                                                    <li><Link to ="/login" className="csi-scroll">Login</Link></li> 
+                                                </ul>
                                                     }
                                                    
                                                                                              
