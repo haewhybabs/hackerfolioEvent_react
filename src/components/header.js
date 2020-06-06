@@ -3,6 +3,34 @@ import React, { Component} from 'react';
 import { Link } from 'react-router-dom';
 
 class Header extends Component {
+
+    constructor(props) {
+    super(props)
+        this.state={
+            user:props.user
+        }
+    }
+
+    componentDidMount(){
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    
+
+    if(user){
+        this.setState({
+            user:user
+        })
+    }
+        
+        
+  }
+
+    componentWillReceiveProps(props){
+        this.setSstate({
+            user:props.user
+        })
+    }
+
     render() {
 
         
@@ -32,11 +60,22 @@ class Header extends Component {
                                                 </div>
                                             </div>
                                             <div className="collapse navbar-collapse">
-                                                <ul className="nav navbar-nav csi-nav">
-                                                    <li><Link to ="/" className="csi-scroll">Home</Link></li>
-                                                    <li><Link to ="/register" className="csi-scroll">Register</Link></li>
-                                                    <li><Link to ="/login" className="csi-scroll">Login</Link></li>                                          
-                                                </ul>
+                                                {this.state.user ? 
+                                                        <ul className="nav navbar-nav csi-nav">
+                                                             
+                                                            <li><Link to ="/" className="csi-scroll">Welcome, {this.state.user.user.fullName}</Link></li>        
+                                                            <li><Link to ="/create-event" className="csi-scroll">Create Event</Link></li>
+                                                        </ul>
+                                                    :
+                                                        <ul className="nav navbar-nav csi-nav">
+                                                            <li><Link to ="/" className="csi-scroll">Home</Link></li>
+                                                            <li><Link to ="/register" className="csi-scroll">Register</Link></li>
+                                                            <li><Link to ="/login" className="csi-scroll">Login</Link></li> 
+                                                        </ul>
+                                                    }
+                                                   
+                                                                                             
+                                                
                                             </div>
                                         
                                         </div>

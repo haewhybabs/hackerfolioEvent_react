@@ -18,11 +18,12 @@ class Register extends Component {
                 email:'',
                 password:'',
                 passwordConfirmation:'',
-                phoneNumber:'',
-                showLoading:false,
+                phoneNumber:''
+                
 
             },
-            loginRedirect:false
+            loginRedirect:false,
+            showLoading:false
         }
     }
 
@@ -165,7 +166,7 @@ class Register extends Component {
                                             <input type="text" name="phoneNumber"  value={this.state.info.phoneNumber} className="form-control csiname" onChange={(e)=>this.handleChange(e)} placeholder="Enter Full PhoneNumber ..." required/>
                                         </div>
                                         <button type="submit" name="submit" value="contact-form" className="csi-btn hvr-glow hvr-radial-out csisend csi-send">Login</button>
-                                        {this.state.showLoading ?  
+                                        {this.state.info.showLoading ?  
                                             <div class="lds-hourglass">Loading...</div>
                                         
                                             :null

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component} from 'react';
 import logo from './logo.svg';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
@@ -10,22 +10,39 @@ import Login from './components/login.js'
 import Register from './components/register.js'
 
 
-function App() {
-  return (
-    <Router>
-      <div className="csi-container">
-        <Header/>
-        <Banner/>
+class App extends Component {
 
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/Register" component={Register} />
-        </Switch>
-        <Footer/>
-      </div>
-    </Router>
-  );
+  constructor(props) {
+    super(props)
+        this.state={
+            
+            user:false
+        }
+  }
+
+  componentDidMount(){
+    const user = localStorage.getItem('user') === 'true';
+
+        
+  }
+
+  render() {
+    return (
+      <Router>
+        <div className="csi-container">
+          <Header/>
+          <Banner/>
+
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/Register" component={Register} />
+          </Switch>
+          <Footer/>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
