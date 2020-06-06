@@ -4,33 +4,20 @@ import { Link,Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {apiUrl} from '../config';
-
-class Login extends Component {
-
+class CreateEvent extends Component {
     constructor(props) {
     super(props)
         this.state={
             info:
             {
-                email:'',
-                password:'',
+               eventName:'',
+               venue:'',
+               type:'',
+               info:''
             },
-            homeRedirect:false,
+            listRedirect:false,
             showLoading:false
         }
-    }
-
-    componentDidMount(){
-        const user = JSON.parse(localStorage.getItem('user'))
-        if(user){
-            this.setState({
-                homeRedirect:true
-            })
-        }
-        
-        this.setState({
-            user
-        })
     }
 
     showLoading = ()=>{
@@ -49,6 +36,7 @@ class Login extends Component {
         toast(error);
     }
 
+
     handleChange(event) {
         let { name, value } = event.target;
         this.setState({
@@ -59,7 +47,8 @@ class Login extends Component {
         });
     }
 
-    
+
+
     handleSubmit=(e)=>{
         
         e.preventDefault();
@@ -67,20 +56,24 @@ class Login extends Component {
         
         var state=this.state.info;
         console.log(state)
-        
+        const user = JSON.parse(localStorage.getItem('user'))
         this.showLoading();
+        
 
         const proxyurl = "https://cors-anywhere.herokuapp.com/";      
-        fetch( proxyurl + apiUrl+'user/login',{
+        fetch( proxyurl + apiUrl+'event/create',{
             method:"POST",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authorization':user.token
             },
                 body: JSON.stringify({
                 
-                email: state.email,
-                password: state.password,
+                    type:state.type,
+                    venue:state.venue,
+                    info:state.info,
+                    eventName:state.eventName,
                 
             })    
         })
@@ -93,23 +86,13 @@ class Login extends Component {
             console.log(contents)
             if(contents.status){ 
                 this.notify("Success!!!");
-                var data={
-                    isLoggedIn:true,
-                    token:contents.token,
-                    user:contents.data
-                }
-                localStorage.setItem('user', JSON.stringify(data));
-
-                this.setState({
-                    homeRedirect:true
-                })
-                window.location.reload(false)
                 
             }
-            else{
-                this.notify("Invalid Email or Password")
-            }
             this.hideLoading();
+
+            this.setState({
+                listRedirect:true
+            })
 
         })
         .catch((error)=>{
@@ -122,18 +105,14 @@ class Login extends Component {
     }
 
 
-
     render() {
 
-        
-        if (this.state.homeRedirect) {
-            return <Redirect push to="/" />;
+        if (this.state.listRedirect) {
+            return <Redirect push to="/event-list" />;
         }
 
-        
+           
         return (
-
-            
 
             <section>
                 <ToastContainer />
@@ -149,13 +128,25 @@ class Login extends Component {
                                 <div className="col-sm-12 col-md-7">
                                     <form method="POST" className="csi-contactform" onSubmit={(e)=>this.handleSubmit(e)}>
                                         <div className="form-group">
-                                            <input type="email" name="email" className="form-control csiemail" onChange={(e)=>this.handleChange(e)} id="csiemail" placeholder="Enter Email address ..." required/>
+                                            <input type="text" name="eventName" className="form-control csiemail" onChange={(e)=>this.handleChange(e)} placeholder="Enter Event Name" required/>
                                         </div>
                                         <div className="form-group">
-                                            <input type="password" name="password" className="form-control csisubject" onChange={(e)=>this.handleChange(e)} id="csisubject" placeholder="Enter Your Password" required />
+                                            <input type="text" name="venue" className="form-control csiemail" onChange={(e)=>this.handleChange(e)} placeholder="Enter Venue" required/>
+                                        </div>
+                                        <div className="form-group">
+                                            <select name="type" className="form-control" onChange={(e)=>this.handleChange(e)}>
+                                                <option>Select Option</option>
+                                                <option value="0">Offline</option>
+                                                <option value="1">Online</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div className="form-group">
+                                            <textarea className="form-control csimessage" name="info" rows="5" onChange={(e)=>this.handleChange(e)} placeholder="Event Info ..." required></textarea>
                                         </div>
                                         
-                                        <button type="submit" name="submit" value="contact-form" onChange={(e)=>this.handleChange(e)} className="csi-btn hvr-glow hvr-radial-out csisend csi-send">Login</button>
+                                        <button type="submit" name="submit" value="contact-form" onChange={(e)=>this.handleChange(e)} className="csi-btn hvr-glow hvr-radial-out csisend csi-send">Submit</button>
                                         {this.state.showLoading ?  
                                             <div class="lds-hourglass">Loading...</div>
                                         
@@ -173,4 +164,4 @@ class Login extends Component {
 }
 
 
-export default Login;
+export default CreateEvent;

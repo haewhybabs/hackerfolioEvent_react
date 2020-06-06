@@ -8,6 +8,7 @@ import Home from './components/home.js';
 import Footer from './components/footer.js'
 import Login from './components/login.js'
 import Register from './components/register.js'
+import createEvent from './components/createEvent.js'
 
 
 class App extends Component {
@@ -20,11 +21,8 @@ class App extends Component {
         }
   }
 
-  componentDidMount(){
-    const user = localStorage.getItem('user') === 'true';
-
-        
-  }
+  
+  
 
   render() {
     return (
@@ -37,6 +35,7 @@ class App extends Component {
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/Register" component={Register} />
+            <Route path="/create-event" component={createEvent} />
           </Switch>
           <Footer/>
         </div>

@@ -12,24 +12,24 @@ class Header extends Component {
     }
 
     componentDidMount(){
-    const user = JSON.parse(localStorage.getItem('user'))
+        const user = JSON.parse(localStorage.getItem('user'))
+        if(user){
+            this.setState({
+                user:user
+            })
+        }
+            
+            
+    }
 
-    
-
-    if(user){
+    logout = () =>{
+        localStorage.clear('user');
         this.setState({
-            user:user
+            user:false,
         })
+        window.location.reload(false)
     }
-        
-        
-  }
 
-    componentWillReceiveProps(props){
-        this.setSstate({
-            user:props.user
-        })
-    }
 
     render() {
 
@@ -65,6 +65,8 @@ class Header extends Component {
                                                              
                                                             <li><Link to ="/" className="csi-scroll">Welcome, {this.state.user.user.fullName}</Link></li>        
                                                             <li><Link to ="/create-event" className="csi-scroll">Create Event</Link></li>
+                                                            <li><Link to ="/event-list" className="csi-scroll">Events</Link></li>
+                                                            <li><Link to ="/" className="csi-scroll" onClick={()=>this.logout()}>Logout</Link></li>
                                                         </ul>
                                                     :
                                                         <ul className="nav navbar-nav csi-nav">
